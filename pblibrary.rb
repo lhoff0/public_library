@@ -1,8 +1,32 @@
 # pblibrary.rb
 # define class Library
-# Add shelves and report number of shelves
-# Report all books on a shelf
+# Report all books it contains
+class Library
+
+	def initialize (library_title)
+		@library_title = library_title
+		@shelves=[]
+	end
 	
+	def add_shelf(shelf) 
+		@shelves << shelf
+	end
+	
+	def delete_shelf(shelf)
+		@shelves.delete(shelf)
+	end
+	
+	def books
+		puts @library_title + ' library'
+		puts '----------------'
+		@shelves.each do |shelf|
+			shelf.books_on_shelf.each do |book|
+				puts book.title
+			end
+		end
+	end
+	
+end	
 
 # define class Shelf
 # Report total number of shelves and books
@@ -10,10 +34,11 @@
 class Shelf
 	attr_accessor :shelf_label, :books_on_shelf
 
-	def initialize (shelf_label)
+	def initialize (shelf_label,library)
 		@shelf_label = shelf_label
 		puts @shelf_label + ' shelf'
 		@books_on_shelf=[]
+		library.add_shelf(self)
 	end
 
 	def enshelf(book)    #book object added to array
@@ -50,8 +75,10 @@ class Book
 
 end
 
-fiction = Shelf.new("fiction")
-nonfiction = Shelf.new("nonfiction")
+
+hudson = Library.new("Hudson")
+fiction = Shelf.new("fiction", hudson)  #initialize
+nonfiction = Shelf.new("nonfiction", hudson)
 red_wall = Book.new("Red Wall")
 oz = Book.new("OZ")
 puts red_wall.title
@@ -59,13 +86,15 @@ puts fiction.shelf_label
 puts fiction.books_on_shelf
 red_wall.enshelf(fiction)
 oz.enshelf(fiction)
+hudson.books
 puts '----------------'
-fiction.books_on_shelf.each do |book|
-	puts book.title
-end
-puts '----------------'
+#fiction.books_on_shelf.each do |book|
+	#puts book.title
+#end
+#puts '----------------'
 red_wall.unshelf(fiction)
-fiction.books_on_shelf.each do |book|
-	puts book.title
-end
+#fiction.books_on_shelf.each do |book|
+	#puts book.title
+#end
+hudson.books
 
